@@ -20,4 +20,22 @@ router.get("/:id", async (req, res) => {
   });
 });
 
+router.get("/test/:userid", async (req, res) => {
+  const query = `
+    SELECT * 
+    FROM 
+      (SELECT userId, title, image
+       FROM (hasmovie JOIN accounts ON hasMovie.userId=accounts.id) 
+       JOIN movies ON hasMovie.movieId=movies.id) AS T
+    WHERE userId=?`;
+    
+  connection.query(query, [req.params.userid], function(
+    error,
+    results,
+    fields
+  ) {
+    if (error) throw error;
+    res.status(200).send(results);
+  });
+});
 module.exports = router;
