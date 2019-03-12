@@ -2,13 +2,14 @@ const connection = require("./connection.js");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const movies = require("./routes/movies");
-const auth = require("./routes/auth");
+const user = require("./routes/user");
+const login = require("./routes/login");
 
 const express = require("express");
 const app = express();
 
 app.use(express.json());
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
@@ -27,7 +28,8 @@ app.use(
   })
 );
 app.use("/api/movies", movies);
-app.use("/api/auth", auth);
+app.use("/api/user", user);
+app.use("/api/login", login);
 
 app.get("/", (req, res) => {
   res.write("Hello");
