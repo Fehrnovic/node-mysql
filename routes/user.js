@@ -11,12 +11,11 @@ router.get("/", async (req, res) => {
 
 router.get("/movies/:userid", async (req, res) => {
   const query = `
-    SELECT movieId, title, image
-    FROM 
-      (SELECT users.userId, movies.movieId, title, image
-      FROM (userhasmovie JOIN users ON userhasmovie.userId=users.userId) 
-      JOIN movies ON userhasmovie.movieId=movies.movieId) AS T
-    WHERE userId=?`;
+    SELECT *
+    FROM users
+    LEFT JOIN userhasmovie ON users.userId = userhasmovie.userId
+    LEFT JOIN movies ON userhasmovie.movieId = movies.movieId
+    WHERE users.userId =?`;
 
   connection.query(query, [req.params.userid], function(
     error,
