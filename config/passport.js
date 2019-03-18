@@ -39,25 +39,23 @@ module.exports = function(passport) {
                 password
               };
 
-              //Hash password
-
               bcrypt.hash(newUser.password, 10, (err, hash) => {
                 if (err) throw err;
 
                 newUser.password = hash;
 
-                connection.query(
-                  "INSERT INTO users (email, password) VALUES (?, ?)",
-                  [newUser.email, newUser.password],
-                  function(error, results, fields) {
-                    if (error) throw error;
+                connection.query("INSERT INTO users SET ?", newUser, function(
+                  error,
+                  results,
+                  fields
+                ) {
+                  if (error) throw error;
 
-                    newUser.id = results.insertId;
+                  newUser.id = results.insertId;
 
-                    const token = createToken(newUser);
-                    return done(null, newUser, { token });
-                  }
-                );
+                  const token = createToken(newUser);
+                  return done(null, newUser, { token });
+                });
               });
             }
           }
