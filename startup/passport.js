@@ -7,7 +7,7 @@ const connection = require("./connection");
 
 function createToken(user) {
   return jwt.sign(
-    { user: _.pick(user, ["id", "email", "created_at"]) },
+    { user: _.pick(user, ["id", "email", "name", "created_at"]) },
     config.get("jwtPrivateKey")
   );
 }
@@ -36,6 +36,7 @@ module.exports = function(passport) {
             } else {
               const newUser = {
                 email,
+                name: req.body.name,
                 password
               };
 

@@ -5,8 +5,7 @@ const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", auth, async (req, res) => {
-  winston.info("Getting all movies");
+router.get("/", async (req, res) => {
   connection.query("SELECT * FROM movies", function(error, results, fields) {
     res.status(200).send(results);
   });
