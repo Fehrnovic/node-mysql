@@ -7,7 +7,7 @@ const flash = require("connect-flash");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 
-require("../config/passport")(passport);
+require("../startup/passport")(passport);
 
 module.exports = function(app) {
   app.use(express.json());

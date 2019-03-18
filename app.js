@@ -1,4 +1,4 @@
-const logger = require("./config/logging");
+const logger = require("./startup/logging");
 const express = require("express");
 const app = express();
 

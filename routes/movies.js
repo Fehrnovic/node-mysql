@@ -1,5 +1,5 @@
 const winston = require("winston");
-const connection = require("../config/connection");
+const connection = require("../startup/connection");
 const auth = require("../middleware/auth");
 
 const express = require("express");
