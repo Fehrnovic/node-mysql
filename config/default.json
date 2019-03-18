@@ -1,0 +1,12 @@
+{
+  "Database": {
+    "localdbConfig": {
+      "host": "localhost",
+      "port": 3305,
+      "database": "moviedatabase",
+      "user": "root",
+      "password": "password"
+    }
+  },
+  "jwtPrivateKey": "mySecretKey"
+}
