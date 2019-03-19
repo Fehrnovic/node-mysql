@@ -9,9 +9,9 @@ router.get("/profile", auth, async (req, res) => {
 });
 
 router.get("/movies", auth, async (req, res) => {
-  console.log("Header", req.header);
+  console.log(req.header);
   const query = `   
-    SELECT hasmovie.movieId, movies.title, movies.image
+    SELECT hasmovie.movieId AS id, movies.title, movies.image
     FROM users
     LEFT JOIN hasmovie ON users.id = hasmovie.userId
     LEFT JOIN movies ON hasmovie.movieId = movies.id
@@ -23,16 +23,4 @@ router.get("/movies", auth, async (req, res) => {
   });
 });
 
-router.post("/movies/:id", auth, async (req, res) => {
-  console.log(req.user);
-  const post = { userId: req.user.id, movieId: req.params.id };
-  connection.query("INSERT INTO hasmovie SET ?", post, function(
-    error,
-    results,
-    fields
-  ) {
-    if (error) throw error;
-    res.status(200).send(results);
-  });
-});
 module.exports = router;
