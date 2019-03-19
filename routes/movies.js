@@ -12,25 +12,14 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  connection.query(
-    "SELECT * FROM movies WHERE movieId=?",
-    [req.params.id],
-    function(error, results, fields) {
-      if (error) throw error;
-      res.status(200).send(results);
-    }
-  );
-});
-
-router.post("/:id", auth, async (req, res) => {
-  const post = { userId: req.user.id, movieId: req.params.id };
-  connection.query("INSERT INTO hasmovie SET ?", post, function(
+  connection.query("SELECT * FROM movies WHERE id=?", [req.params.id], function(
     error,
     results,
     fields
   ) {
     if (error) throw error;
-    res.status(200).send(results);
+    res.status(200).send(results[0]);
   });
 });
+
 module.exports = router;
