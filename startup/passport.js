@@ -1,28 +1,28 @@
-const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const _ = require("lodash");
-const config = require("config");
-const connection = require("./connection");
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const _ = require('lodash');
+const config = require('config');
+const connection = require('./connection');
 
 function createToken(user) {
   return jwt.sign(
-    { user: _.pick(user, ["id", "email", "name", "created_at"]) },
-    config.get("jwtPrivateKey")
+    { user: _.pick(user, ['id', 'email', 'name', 'created_at']) },
+    config.get('jwtPrivateKey')
   );
 }
 
 module.exports = function(passport) {
   passport.use(
-    "local-register",
+    'local-register',
     new LocalStrategy(
       {
-        usernameField: "email",
+        usernameField: 'email',
         passReqToCallback: true
       },
       function(req, email, password, done) {
         connection.query(
-          "SELECT * FROM users WHERE email = ?",
+          'SELECT * FROM users WHERE email = ?',
           [email],
           function(err, rows) {
             if (err) return done(err);
@@ -31,7 +31,7 @@ module.exports = function(passport) {
               return done(
                 null,
                 false,
-                req.flash("signupMessage", "Already taken")
+                req.flash('signupMessage', 'Already taken')
               );
             } else {
               const newUser = {
@@ -45,7 +45,7 @@ module.exports = function(passport) {
 
                 newUser.password = hash;
 
-                connection.query("INSERT INTO users SET ?", newUser, function(
+                connection.query('INSERT INTO users SET ?', newUser, function(
                   error,
                   results,
                   fields
@@ -66,16 +66,16 @@ module.exports = function(passport) {
   );
 
   passport.use(
-    "local-login",
+    'local-login',
     new LocalStrategy(
       {
-        usernameField: "email",
-        passwordField: "password",
+        usernameField: 'email',
+        passwordField: 'password',
         passReqToCallback: true
       },
       function(req, email, password, done) {
         connection.query(
-          "SELECT * FROM users WHERE email = ?",
+          'SELECT * FROM users WHERE email = ?',
           [email],
           function(err, rows) {
             if (err) return done(err);
@@ -84,7 +84,7 @@ module.exports = function(passport) {
               return done(
                 null,
                 false,
-                req.flash("loginMessage", "No user found")
+                req.flash('loginMessage', 'No user found')
               );
             }
 
@@ -92,7 +92,7 @@ module.exports = function(passport) {
               return done(
                 null,
                 false,
-                req.flash("loginMessage", "Wrong Password")
+                req.flash('loginMessage', 'Wrong Password')
               );
             }
             const token = createToken(rows[0]);
@@ -108,7 +108,7 @@ module.exports = function(passport) {
   });
 
   passport.deserializeUser(function(id, done) {
-    connection.query("SELECT * FROM users WHERE id = ?", [id], function(
+    connection.query('SELECT * FROM users WHERE id = ?', [id], function(
       err,
       rows
     ) {

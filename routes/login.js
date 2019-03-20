@@ -1,8 +1,8 @@
-const connection = require("../connection");
-const express = require("express");
+const connection = require('../connection');
+const express = require('express');
 const router = express.Router();
 
-router.post("/", function(req, res) {
+router.post('/', function(req, res) {
   const loginPost = {
     username: req.body.username,
     password: req.body.password,
@@ -10,13 +10,13 @@ router.post("/", function(req, res) {
   };
 
   connection.query(
-    "SELECT * FROM users WHERE username = ?",
+    'SELECT * FROM users WHERE username = ?',
     loginPost.username,
     function(error, results, fields) {
       if (results.length > 0) {
-        res.status(409).send("Username already exists");
+        res.status(409).send('Username already exists');
       } else {
-        connection.query("INSERT INTO users SET ?", loginPost, function(
+        connection.query('INSERT INTO users SET ?', loginPost, function(
           error,
           results,
           fields

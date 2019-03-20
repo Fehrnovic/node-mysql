@@ -1,14 +1,14 @@
-const connection = require("../startup/connection");
-const auth = require("../middleware/auth");
+const connection = require('../startup/connection');
+const auth = require('../middleware/auth');
 
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-router.get("/profile", auth, async (req, res) => {
-  res.status(200).send("This is the profile");
+router.get('/profile', auth, async (req, res) => {
+  res.status(200).send('This is the profile');
 });
 
-router.get("/movies", auth, async (req, res) => {
+router.get('/movies', auth, async (req, res) => {
   console.log(req.header);
   const query = `   
     SELECT hasmovie.movieId AS id, movies.title, movies.image
