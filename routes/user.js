@@ -9,7 +9,6 @@ router.get('/profile', auth, async (req, res) => {
 });
 
 router.get('/movies', auth, async (req, res) => {
-  console.log(req.header);
   const query = `   
     SELECT hasmovie.movieId AS id, movies.title, movies.image
     FROM users
