@@ -23,11 +23,11 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/:id', auth, async (req, res) => {
-  const post = { userId: req.user.id, movieId: req.params.id };
+  const post = { userId: req.user.id, imdbID: req.params.id };
 
   connection.query(
-    'SELECT * FROM hasmovie WHERE userId=? AND movieId=?',
-    [post.userId, post.movieId],
+    'SELECT * FROM hasmovie WHERE userId=? AND imdbID=?',
+    [post.userId, post.imdbID],
     function(error, results, fields) {
       if (results.length) return res.status(400).send('already added');
 

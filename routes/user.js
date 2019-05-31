@@ -1,5 +1,7 @@
+const async = require('async');
 const connection = require('../startup/connection');
 const auth = require('../middleware/auth');
+const { getMovie } = require('../services/movieService');
 
 const express = require('express');
 const router = express.Router();
@@ -9,16 +11,22 @@ router.get('/profile', auth, async (req, res) => {
 });
 
 router.get('/movies', auth, async (req, res) => {
-  const query = `   
-    SELECT hasmovie.movieId AS id, movies.title, movies.image
-    FROM users
-    LEFT JOIN hasmovie ON users.id = hasmovie.userId
-    LEFT JOIN movies ON hasmovie.movieId = movies.id
-    WHERE users.id =?`;
+  const query = `
+    SELECT imdbID 
+    FROM hasmovie
+    WHERE hasmovie.userId = ?`;
 
-  connection.query(query, [req.user.id], function(error, results, fields) {
+  connection.query(query, [req.user.id], async (error, results, fields) => {
     if (error) throw error;
-    res.status(200).send(results);
+
+    let movies = [];
+
+    for (const result of results) {
+      const { data } = await getMovie(result.imdbID);
+      movies.push(data);
+    }
+
+    res.status(200).send(movies);
   });
 });
 
